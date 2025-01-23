@@ -1,0 +1,24 @@
+networks:
+  traefik_proxy:
+    external: true
+
+services:
+  wakapi:
+    ports: []
+    networks:
+      - default
+      - traefik_proxy
+    labels:
+      - traefik.enable=true
+      # HTTP Router
+      - traefik.http.routers.${SERVICE}.entrypoints=web
+      - traefik.http.routers.${SERVICE}.rule=Host(`${DOMAIN}`)
+      - traefik.http.routers.${SERVICE}.service=${SERVICE}
+      - traefik.http.routers.${SERVICE}.middlewares=http2https@file
+      - traefik.http.services.${SERVICE}.loadbalancer.server.port=${APP_PORT}
+      # HTTPS Router
+      - traefik.http.routers.${SERVICE}-https.entrypoints=webs
+      - traefik.http.routers.${SERVICE}-https.rule=Host(`${DOMAIN}`)
+      - traefik.http.routers.${SERVICE}-https.service=${SERVICE}-https
+      - traefik.http.routers.${SERVICE}-https.tls.certresolver=leresolver
+      - traefik.http.services.${SERVICE}-https.loadbalancer.server.port=${APP_PORT}
