@@ -1,3 +1,4 @@
+[muety/wakapi: 📊 A minimalist, self-hosted WakaTime-compatible backend for coding statistics](https://github.com/muety/wakapi)
 
 ## vscode wakatime
 
